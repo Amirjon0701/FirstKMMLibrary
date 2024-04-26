@@ -1,0 +1,24 @@
+-- Создаем временную таблицу с добавленным первичным ключом
+-- CREATE TABLE users_temp (
+--          author TEXT,
+--          title TEXT NOT NULL,
+--          description TEXT NOT NULL,
+--          url TEXT NOT NULL PRIMARY KEY ,
+--          url_to_image TEXT,
+--          content TEXT NOT NULL,
+--          published_at TEXT NOT NULL,
+--          source_id TEXT,
+--          source_name TEXT NOT NULL
+-- );
+--
+-- -- Копируем данные из оригинальной таблицы во временную таблицу
+-- INSERT INTO users_temp (author, title, description, url,
+-- url_to_image, content, published_at, source_id, source_name)
+-- SELECT Article.*
+-- FROM Article;
+--
+-- -- Удаляем оригинальную таблицу
+-- DROP TABLE Article;
+--
+-- -- Переименовываем временную таблицу в имя оригинальной таблицы
+-- ALTER TABLE users_temp RENAME TO Article;

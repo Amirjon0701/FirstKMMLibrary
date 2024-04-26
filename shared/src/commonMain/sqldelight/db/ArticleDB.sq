@@ -1,0 +1,22 @@
+CREATE TABLE Article(
+    author TEXT,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    url TEXT NOT NULL PRIMARY KEY ,
+    url_to_image TEXT,
+    content TEXT NOT NULL,
+    published_at TEXT NOT NULL,
+    source_id TEXT,
+    source_name TEXT NOT NULL
+);
+
+insertArtcile:
+INSERT OR REPLACE INTO Article(
+    author, title, description,
+    url, url_to_image, content,
+    published_at, source_id, source_name
+)
+VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+getArticles:
+SELECT Article.* FROM Article;
