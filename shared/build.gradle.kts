@@ -30,7 +30,7 @@ kotlin {
         ios.deploymentTarget = "14.1"
         podfile = project.file("../iosApp/Podfile")
         framework {
-            baseName = "shared"
+            baseName = iOSBinaryName
         }
     }
 
@@ -93,7 +93,7 @@ sqldelight {
 }
 
 group = "com.eskhata.kmm"
-version = "0.0.1"
+version = "0.0.2"
 
 publishing {
 //    publications {
@@ -129,35 +129,35 @@ publishing {
     }
 }
 
-//tasks.register("prepareReleaseOfiOSXCFramework") {
-//    description = "Publish iOS framework to the Cocoa Repo"
-//
-//    // Create Release Framework for Xcode
-//    dependsOn("assembleXCFramework", "packageDistribution")
-//
-//    doLast {
-//
-//        // Update Podspec Version
-//        val poddir = File("$rootDir/$iOSBinaryName.podspec")
-//        val podtempFile = File("$rootDir/$iOSBinaryName.podspec.new")
-//
-//        val podreader = poddir.bufferedReader()
-//        val podwriter = podtempFile.bufferedWriter()
-//        var podcurrentLine: String?
-//
-//        while (podreader.readLine().also { currLine -> podcurrentLine = currLine } != null) {
-//            if (podcurrentLine?.trim()?.startsWith("spec.version") == true) {
-//                podwriter.write("    spec.version       = \"${version}\"" + System.lineSeparator())
-//            } else if (podcurrentLine?.trim()?.startsWith("spec.source") == true) {
-//                podwriter.write("    spec.source       = { :http => \"https://github.com/rakeshchander/CachingLibrary-KMM/releases/download/${version}/${iOSBinaryName}.xcframework.zip\"}" + System.lineSeparator())
-//            } else {
-//                podwriter.write(podcurrentLine + System.lineSeparator())
-//            }
-//        }
-//        podwriter.close()
-//        podreader.close()
-//        podtempFile.renameTo(poddir)
-//
+tasks.register("prepareReleaseOfiOSXCFramework") {
+    description = "Publish iOS framework to the Cocoa Repo"
+
+    // Create Release Framework for Xcode
+    dependsOn("assembleXCFramework", "packageDistribution")
+
+    doLast {
+
+        // Update Podspec Version
+        val poddir = File("$rootDir/$iOSBinaryName.podspec")
+        val podtempFile = File("$rootDir/$iOSBinaryName.podspec.new")
+
+        val podreader = poddir.bufferedReader()
+        val podwriter = podtempFile.bufferedWriter()
+        var podcurrentLine: String?
+
+        while (podreader.readLine().also { currLine -> podcurrentLine = currLine } != null) {
+            if (podcurrentLine?.trim()?.startsWith("spec.version") == true) {
+                podwriter.write("    spec.version       = \"${version}\"" + System.lineSeparator())
+            } else if (podcurrentLine?.trim()?.startsWith("spec.source") == true) {
+                podwriter.write("    spec.source       = { :http => }" + System.lineSeparator())
+            } else {
+                podwriter.write(podcurrentLine + System.lineSeparator())
+            }
+        }
+        podwriter.close()
+        podreader.close()
+        podtempFile.renameTo(poddir)
+
 //        // Update Cartfile Version
 //        val cartdir = File("$rootDir/Carthage/$iOSBinaryName.json")
 //        val carttempFile = File("$rootDir/Carthage/$iOSBinaryName.json.new")
@@ -179,7 +179,7 @@ publishing {
 //        cartwriter.close()
 //        cartreader.close()
 //        carttempFile.renameTo(cartdir)
-//
+
 //        // Update Package.swift Version
 //
 //        // Calculate Checksum
@@ -216,25 +216,25 @@ publishing {
 //        spmwriter.close()
 //        spmreader.close()
 //        spmtempFile.renameTo(spmdir)
-//    }
-//}
-//
-//tasks.create<Zip>("packageDistribution") {
-//    // Delete existing XCFramework
-//    delete("$rootDir/XCFramework")
-//
-//    // Replace XCFramework File at root from Build Directory
-//    copy {
-//        from("$buildDir/XCFrameworks/release")
-//        into("$rootDir/XCFramework")
-//    }
-//
-//    // Delete existing ZIP, if any
-//    delete("$rootDir/${iOSBinaryName}.xcframework.zip")
-//    // ZIP File Name - as per Carthage Nomenclature
-//    archiveFileName.set("${iOSBinaryName}.xcframework.zip")
-//    // Destination for ZIP File
-//    destinationDirectory.set(layout.projectDirectory.dir("../"))
-//    // Source Directory for ZIP
-//    from(layout.projectDirectory.dir("../XCFramework"))
-//}
+    }
+}
+
+tasks.create<Zip>("packageDistribution") {
+    // Delete existing XCFramework
+    delete("$rootDir/XCFramework")
+
+    // Replace XCFramework File at root from Build Directory
+    copy {
+        from("$buildDir/XCFrameworks/release")
+        into("$rootDir/XCFramework")
+    }
+
+    // Delete existing ZIP, if any
+    delete("$rootDir/${iOSBinaryName}.xcframework.zip")
+    // ZIP File Name - as per Carthage Nomenclature
+    archiveFileName.set("${iOSBinaryName}.xcframework.zip")
+    // Destination for ZIP File
+    destinationDirectory.set(layout.projectDirectory.dir("../"))
+    // Source Directory for ZIP
+    from(layout.projectDirectory.dir("../XCFramework"))
+}
