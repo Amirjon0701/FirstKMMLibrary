@@ -1,6 +1,7 @@
 import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+import java.util.Properties
 
 val iOSBinaryName = "shared"
 
@@ -121,8 +122,8 @@ publishing {
             url = uri("https://maven.pkg.github.com/Amirjon0701/FirstKMMLibrary")
 
             credentials {
-                username = "Amirjon0701"
-                password = "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"
+                username = Properties().getProperty("username")
+                password = Properties().getProperty("password")
             }
         }
     }
